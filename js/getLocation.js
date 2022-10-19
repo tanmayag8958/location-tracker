@@ -89,20 +89,18 @@ function getTagWithContent(tagName, content) {
 
 
 function createLocationTable(trackingDetails) {
-    const trackingTable = document.getElementById("tacking-table");
-    const newHeaderRow = document.createElement("tr");
-    ['timestamp', 'latitude', 'longitude', 'altitude', 'accuracy'].forEach((header) => {
-        newHeaderRow.appendChild(getTagWithContent('th', header));
-    });
-    trackingTable.appendChild(newHeaderRow);
-    console.log(trackingDetails);
+    const trackingTableBody = document.getElementById("tracking-table-body");
+    trackingTableBody.innerHTML = '';
 
     Object.keys(trackingDetails).forEach((timestamp) => {
         const newDataRow = document.createElement("tr");
-        newDataRow.appendChild(getTagWithContent('td', timestamp));
+        let dateObject = new Date(parseInt(timestamp));
+        let dateString = dateObject.getDate() + "-" + (dateObject.getMonth() + 1) + "-" + dateObject.getFullYear() + " " +
+            dateObject.getHours() + ":" + dateObject.getMinutes() + ":" + dateObject.getSeconds();
+        newDataRow.appendChild(getTagWithContent('td', dateString));
         Object.values(trackingDetails[timestamp]).forEach((_value) => {
             newDataRow.appendChild(getTagWithContent('td', _value));
         });
-        trackingTable.appendChild(newDataRow);
+        trackingTableBody.appendChild(newDataRow);
     });
 }
