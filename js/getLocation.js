@@ -13,6 +13,8 @@ const errorCallback = (error) => {
     clearTrackingDetails();
     document.getElementById("track-name").disabled = false;
     document.getElementById("track-name").value = '';
+    document.getElementById("start-btn").disabled = false;
+    document.getElementById("stop-btn").disabled = true;
     let trackingDetails = getTrackingDetails();
     trackingDetails['error'] = error;
     setTrackingDetails(trackingDetails);
