@@ -9,7 +9,7 @@ const successCallback = (position) => {
     setTrackingDetails(trackingDetails);
 };
 const errorCallback = (error) => {
-    clearInterval(tracking_interval);
+    navigator.geolocation.clearWatch(tracking_watcher);
     clearTrackingDetails();
     document.getElementById("track-name").disabled = false;
     document.getElementById("track-name").value = '';
@@ -17,7 +17,7 @@ const errorCallback = (error) => {
     trackingDetails['error'] = error;
     setTrackingDetails(trackingDetails);
 };
-let tracking_interval = null;
+let tracking_watcher = null;
 
 
 function getTrackingDetails() {
@@ -54,22 +54,20 @@ function startTracking() {
         document.getElementById("track-name").disabled = true;
         document.getElementById("start-btn").disabled = true;
         document.getElementById("stop-btn").disabled = false;
-        tracking_interval = setInterval(() => {
-            navigator.geolocation.getCurrentPosition(
-                successCallback,
-                errorCallback,
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                }
-            );
-        }, 1000);
+        tracking_watcher = navigator.geolocation.watchPosition(
+            successCallback,
+            errorCallback,
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+            }
+        );
     }
 }
 
 
 function stopTracking() {
-    clearInterval(tracking_interval);
+    navigator.geolocation.clearWatch(tracking_watcher);
     createLocationTable(getTrackingDetails());
     clearTrackingDetails();
     document.getElementById("track-name").disabled = false;
